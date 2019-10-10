@@ -54,12 +54,12 @@ handler.on('push', async function (event) {
         console.error(error)
       }
     } else if (branch === 'master') {
-      // // pull, build, restart master
-      // try {
-      //   await redeploy(true)
-      // } catch (error) {
-      //   console.error(error)
-      // }
+      // pull, build, restart master
+      try {
+        await redeploy(true)
+      } catch (error) {
+        console.error(error)
+      }
     } else {
       console.error(`Unkown ref: ${event.payload.ref}`)
     }
