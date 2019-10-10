@@ -1,0 +1,20 @@
+{
+  "name": "waxshop-webhooks",
+  "version": "1.0.0",
+  "description": "webhooks for rebuilding on push to github waxshop dev and production",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "github",
+    "webhook",
+    "nuxt",
+    "vue"
+  ],
+  "author": "Jeremy Poole",
+  "license": "MIT",
+  "dependencies": {
+    "node-github-webhook": "^1.0.7"
+  }
+}
