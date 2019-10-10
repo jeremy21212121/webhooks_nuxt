@@ -9,7 +9,7 @@ const spawn = require('child_process').spawn
 const redeploy = (prod = false) => new Promise((resolve, reject) => {
   let scriptPath = __dirname
   scriptPath += prod ? '/bash/redeploy_prod.sh' : '/bash/redeploy_dev.sh'
-  const cmd = spawn('/usr/bin/bash', ['-e', scriptPath])
+  const cmd = spawn('/bin/bash', ['-e', scriptPath])
   cmd.stdout.on('data', data => console.log(data.toString()))
   cmd.stderr.on('data', data => console.error(data.toString()))
   cmd.on('exit', code => (code === 0) ? resolve(code) : reject(code))
