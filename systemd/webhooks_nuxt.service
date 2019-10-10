@@ -1,0 +1,15 @@
+[Unit]
+Description=Node server that receives github webhooks
+Requires=network-online.target nginx.service
+After=syslog.target network-online.target
+[Service]
+WorkingDirectory=/opt/webhooks_nuxt
+ExecStart=/home/ubuntu/.nvm/versions/node/v12.9.1/bin/npm run start
+Restart=always # Restart service after 10 seconds if node service crashes 
+RestartSec=10 # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=webhooks-nuxt
+User=nuxtwaxshop
+Group=nuxtwaxshop
+
