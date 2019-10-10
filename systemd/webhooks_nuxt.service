@@ -12,6 +12,6 @@ RestartSec=10
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=webhooks-nuxt
-User=nuxtwaxshop
-Group=nuxtwaxshop
+User=ubuntu
+Group=ubuntu
 
