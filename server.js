@@ -1,6 +1,6 @@
 const http = require('http')
 const createHandler = require('node-github-webhook')
-const secrets = require('secrets.js')
+const secrets = require('./secrets.js')
 const handler = createHandler({ path: '/webhook1', secret: secrets[0] }) // single handler
 
 // run redeploy bash script
