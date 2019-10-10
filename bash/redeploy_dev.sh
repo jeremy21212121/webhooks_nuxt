@@ -5,6 +5,7 @@ set -e;
 # exit on error
 
 cd /opt/waxshop;
+git checkout -- package-lock.json;
 git pull;
 npm install;
 npm run build;
