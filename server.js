@@ -61,7 +61,7 @@ handler.on('push', async function (event) {
         console.error(error)
       }
     } else {
-      console.error(`Unkown ref: ${event.payload.ref}`)
+      console.error(`Unknown ref: ${event.payload.ref}`)
     }
   }
 })
