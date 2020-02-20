@@ -3,7 +3,7 @@ Description=Node server that receives github webhooks for trivia app
 Requires=network-online.target nginx.service
 After=syslog.target network-online.target
 [Service]
-WorkingDirectory=/opt/webhooks_nuxt_trivia
+WorkingDirectory=/opt/webhooks-trivia
 # not using nvm on this server
 ExecStart=/usr/bin/npm run start
 Restart=always
@@ -12,7 +12,7 @@ RestartSec=10
 # Output to syslog
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=webhooks-nuxt-trivia
+SyslogIdentifier=webhooks-trivia
 User=ubuntu
 Group=ubuntu
 
