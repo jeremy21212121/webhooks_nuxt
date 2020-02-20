@@ -39,7 +39,7 @@ const rollBackToHash = (frontOrBack, commitHash) => new Promise((resolve, reject
 })
 
 // try to redeploy. If that fails, roll back. If that fails, it will be handled in the callers scope by sending me an email
-const redeployOrRollBack = async (frontOrBack, commitHash) => new Promise((resolve, reject) => {
+const redeployOrRollBack = (frontOrBack, commitHash) => new Promise(async (resolve, reject) => {
 	try {
       await redeploy(frontOrBack)
       resolve()

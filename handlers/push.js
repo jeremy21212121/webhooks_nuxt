@@ -1,6 +1,7 @@
 const spawn = require('child_process').spawn
+const path = require('path')
 
-const redeployOrRollBack = require('./customUtils/redeploy.js')
+const redeployOrRollBack = require(path.resolve('./customUtils/redeploy.js'))
 const sendErrorEmail = require(path.resolve('./customUtils/errorEmail.js'))
 const { frontEndRoute, backEndRoute } = require(path.resolve('./config.js'))
 
@@ -26,7 +27,7 @@ const getKnownGoodCommitHash = (frontOrBack) => new Promise((resolve, reject) =>
   } catch(e) {
     reject(e)
   }
-}
+})
 
 const parseBranch = (refString) => {
   // parses branch name from ref string
