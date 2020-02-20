@@ -6,9 +6,12 @@ After=syslog.target network-online.target
 WorkingDirectory=/opt/webhooks-trivia
 # not using nvm on this server
 ExecStart=/usr/bin/npm run start
-Restart=always
+
+# Don't restart on failure. Failure means a deploy failed and the rollback to a known-good state failed, or something I didn't imagine happened. An email is triggered in this case.
+# Restart=always
 # Restart service after 10 seconds if node service crashes 
-RestartSec=10
+# RestartSec=10
+
 # Output to syslog
 StandardOutput=syslog
 StandardError=syslog
