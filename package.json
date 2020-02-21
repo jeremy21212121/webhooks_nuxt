@@ -1,7 +1,7 @@
 {
-  "name": "waxshop-webhooks",
+  "name": "just-trivia-webhooks",
   "version": "1.0.0",
-  "description": "webhooks for rebuilding on push to github waxshop dev and production",
+  "description": "CD server triggered by github webhooks",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,10 @@
     "github",
     "webhook",
     "nuxt",
-    "vue"
+    "vue",
+    "build",
+    "CI/CD",
+    "node"
   ],
   "author": "Jeremy Poole",
   "license": "MIT",
