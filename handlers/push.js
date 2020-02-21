@@ -6,13 +6,18 @@ const sendErrorEmail = require(path.resolve('./customUtils/errorEmail.js'))
 const { frontEndRoute, backEndRoute } = require(path.resolve('./config.js'))
 
 const getKnownGoodCommitHash = (frontOrBack) => new Promise((resolve, reject) => {
+	
   try {
+
     // bash script basically just runs 'git rev-parse HEAD'
     const cmd = spawn('/bin/bash', ['-e', path.resolve('./bash/get_head_commit.sh'), frontOrBack])
 
+// there will only be one chunk, as the hash is only ~40 bytes and chunks are up to 8192 bytes. Still, it may be more robust to not make that assumption. Accumulate the data on 'data' event, then resolve with it on cmd 'exit' event if the code is 0?
     cmd.stdout.on('data', data => {
+
       // remove any sneaky newline characters, as they will make the length check fail
       const hashString = data.toString().replace(/\n/g, '')
+
       // commit hash should be 40 chars long
       if (hashString.length === 40) {
         resolve(hashString)
@@ -20,13 +25,17 @@ const getKnownGoodCommitHash = (frontOrBack) => new Promise((resolve, reject) =>
         reject(new Error('invalid-hash'))
 	  }
 	})
+
 	// reject if there is any output to stderr
 	cmd.stderr.on('data', data => reject(new Error('restore-hash-script-error')))
+
 	// reject if the process exits with a non-zero exit code.
 	cmd.on('exit', code => { if (code !== 0) { reject(new Error(`Commit hash exit code: ${code}`)) } })
+
   } catch(e) {
     reject(e)
   }
+  
 })
 
 const parseBranch = (refString) => {
@@ -38,6 +47,9 @@ const parseBranch = (refString) => {
   }
   return branch
 }
+
+//~ simplified verison of above. We won't enable it until we are sure everything else is working, to avoid changing too much at once.
+//~ const parseBranch = (ref) => ref.split('/')[2] || ''
 
 const pushHandler = async (event) => {
 
@@ -64,13 +76,27 @@ const pushHandler = async (event) => {
 	// we should re-build/deploy if frontOrBack === "front" or "back"
 	const shouldBuild = (frontOrBack === 'front' || frontOrBack === 'back')
 
-	// await the known good hash in case of build error
-	const knownGoodHash = await getKnowGoodCommitHash(frontOrBack)
+	// await the known good hash for rolling back in case of build error
+	let knownGoodHash = ''
+	try {
+      knownGoodHash = await getKnowGoodCommitHash(frontOrBack)
+	} catch (e) {
+      // couldn't get last known good hash, unsafe to proceed
+      console.error(new Error("couldn't get last known good hash, unsafe to proceed"))
+      console.error(e)
+      await sendErrorEmail(`just-trivia ${frontOrBack}-end deploy failure. Couldn't get last known good hash, unsafe to proceed.`)
+      process.exit(1)
+	}
 	
 	if (shouldBuild) {
       try {
-		// redeploy, if that fails roll back, if that fails send me an email
-        await redeployOrRollBack(frontOrBack, knownGoodHash)
+		// redeploy, if that fails roll back, if that fails send me an email and exit
+        const redeployed = await redeployOrRollBack(frontOrBack, knownGoodHash)
+        if (redeployed === false) {
+		  // redeploy failed but rollback succeeded
+		  console.error(new Error(`Deploy failure, rollback appears successful. ${frontOrBack}-end, last known good commit ${knownGoodHash}`))
+          await sendErrorEmail(`just-trivia deploy failure, rollback appears successful. ${frontOrBack}-end, last known good commit ${knownGoodHash}`)
+		}
       } catch (error) {
 		// uh-oh, both redeploy and roll back failed. Game over man, game over! All hope is lost. Throw yourselves in the road.
         // send an email via contact form API at jeremypoole.ca/api/send
