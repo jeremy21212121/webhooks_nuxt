@@ -4,7 +4,7 @@
 > quick and ugly server for receiving github webhooks and re-building & re-deploying
 > **now featuring less ugly**
 
-*This branch is configured for my trivia web app hosted at JustTrivia.fun **
+*This branch is configured for my trivia PWA hosted at [JustTrivia.fun](https://justtrivia.fun) **
 
 ** Update: Now rolls back to last known-good commit if a redeploy fails **
 
@@ -16,6 +16,8 @@ This server runs as a systemd service itself, see the `systemd` folder. This han
 
 Supports multiple repos, in this case a [front-end vue/nuxt app](https://github.com/jeremy21212121/trivia-frontend) and a [back-end express service](https://github.com/jeremy21212121/express-trivia-server). I use NGINX for TLS termination and reverse proxying.
 
-All the `git pull`-ing and `npm install`-ing is handled by shell scripts in the bash folder. Failure of a redeploy script causes the application to be rolled back to the last known-good commit. Failure of the rollback script sends me a sternly-worded email and exits the process.
+All the `git pull`-ing and `npm install`-ing is handled by shell scripts in the bash folder. It may sound kind of hacky, but it grew organically. I wrote bash scripts when I grew wary of manually entering commands, and I built this when I grew weary of manually running bash scripts.
+
+Failure of a redeploy script causes the application to be rolled back to the last known-good commit. Failure of the rollback script sends me a sternly-worded email and exits the process.
 
 With this arrangement, any tests should be run on the dev machine ie. using pre-commit git hooks. This currently has no ability to run tests itself, but it could be easily bodged in to the bash scripts if needed in the future.
