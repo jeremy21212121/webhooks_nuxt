@@ -79,7 +79,7 @@ const pushHandler = async (event) => {
 	// await the known good hash for rolling back in case of build error
 	let knownGoodHash = ''
 	try {
-      knownGoodHash = await getKnowGoodCommitHash(frontOrBack)
+      knownGoodHash = await getKnownGoodCommitHash(frontOrBack)
 	} catch (e) {
       // couldn't get last known good hash, unsafe to proceed
       console.error(new Error("couldn't get last known good hash, unsafe to proceed"))
