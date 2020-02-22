@@ -26,7 +26,7 @@ const rollBackToHash = (frontOrBack, commitHash) => new Promise((resolve, reject
     const cmd = spawn('/bin/bash', ['-e', path.resolve(`./bash/roll_back_${frontOrBack}.sh`), commitHash])
 
     // handle stdout. It will be logged in the syslog by systemd.
-    cmd.stdout.on('data', data => console.log(data.toString())
+    cmd.stdout.on('data', data => console.log(data.toString()))
 
 	// reject promise. we shouldn't see any stderr output unless something went horribly wrong.
 	cmd.stderr.on('data', data => reject(new Error('restore-hash-script-error')))
