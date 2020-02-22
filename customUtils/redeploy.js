@@ -20,12 +20,13 @@ const redeploy = (frontOrBack) => new Promise((resolve, reject) => {
 // redeploys either front or back end to the last know good commit
 // commit hash is stored before redeploy is attempted in push event handler
 const rollBackToHash = (frontOrBack, commitHash) => new Promise((resolve, reject) => {
+  console.log('Rolling back to known good %s end commit: %s', frontOrBack, commitHash)
   try {
 	// spawn the relevant rollback script. Very similar to the deploy script, only we 'git checkout' to the last known good commit
     const cmd = spawn('/bin/bash', ['-e', path.resolve(`./bash/roll_back_${frontOrBack}.sh`), commitHash])
 
     // handle stdout. It will be logged in the syslog by systemd.
-    cmd.stdout.on('data', data => console.log('Known good %s end commit: %s', frontOrBack, data.toString()))
+    cmd.stdout.on('data', data => console.log(data.toString())
 
 	// reject promise. we shouldn't see any stderr output unless something went horribly wrong.
 	cmd.stderr.on('data', data => reject(new Error('restore-hash-script-error')))
