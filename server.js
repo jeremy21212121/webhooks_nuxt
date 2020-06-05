@@ -1,12 +1,13 @@
 const http = require('http')
-const spawn = require('child_process').spawn
+// const spawn = require('child_process').spawn
 const createHandler = require('node-github-webhook')
 
 const pushHandler = require('./handlers/push.js')
 
-const { frontEndRoute, backEndRoute, secrets, port, host } = require('./config.js')
+const { routes, secrets, port, host } = require('./config.js')
 
-const handler = createHandler([{ path: frontEndRoute, secret: secrets[0] }, { path: backEndRoute, secret: secrets[0] }])
+// const handler = createHandler([{ path: frontEndRoute, secret: secrets[0] }, { path: backEndRoute, secret: secrets[0] }])
+const handler = createHandler(routes.keys().map(route => ({ path: route, secret: secrets[0] })))
 
 handler.on('error', function (err) {
   console.error(err)

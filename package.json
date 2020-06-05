@@ -4,13 +4,12 @@
   "description": "CD server triggered by github webhooks",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha"
   },
   "keywords": [
     "github",
     "webhook",
-    "nuxt",
-    "vue",
+    "javascript",
     "build",
     "CI/CD",
     "node"
@@ -19,5 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "node-github-webhook": "^1.0.7"
+  },
+  "devDependencies": {
+    "mocha": "^7.2.0"
   }
 }
